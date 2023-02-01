@@ -80,7 +80,7 @@ int main()
 		
 	//accept the incoming connection
 	addrlen = sizeof(address);
-	puts("Waiting for connections ...");
+	
 		
        FD_SET(listener,&master);
        
@@ -126,9 +126,12 @@ int main()
 		        }
 		        else{
 			 memset(buffer,0,1025);
-			if((nbytes=recv(i, buffer,sizeof(buffer), 0))<=0 )
+			
+			nbytes=recv(i, buffer,1025, 0);
+			int tmp=strncmp(buffer,"exit",4);
+			if(tmp==0)
 			{
-				if(nbytes==0){
+			  
 				char msg[1025]="client left from socket ";
         
                                 char msg1[100];
@@ -145,18 +148,12 @@ int main()
 			    
 			           }
 			           }
-			       }
-			       memset(msg,0,1025);
-			       memset(msg1,0,100);
-			       }
-				
-				else
-				perror("recv");
-				close(i);
+			        }
+			        memset(msg,0,1025);
+			        memset(msg1,0,100);
+			        close(i);
 				FD_CLR(i,&master);
-			}
-			
-			
+		        }
 			else {
 			  
 			  printf("client at socket %d:%s\n",i,buffer);
